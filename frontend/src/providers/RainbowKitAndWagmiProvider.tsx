@@ -16,14 +16,10 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
-if (!process.env.NEXT_PUBLIC_REOWN_PROJECT_ID) {
-  throw new Error('NEXT_PUBLIC_REOWN_PROJECT_ID is not defined');
-}
-
 const config = getDefaultConfig({
-  appName: 'My RainbowKit App',
-  projectId: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID,
-  chains: [hardhat, sepolia],
+  appName: 'Bank DApp',
+  projectId: 'YOUR_PROJECT_ID',
+  chains: [hardhat],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
