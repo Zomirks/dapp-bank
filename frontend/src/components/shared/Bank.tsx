@@ -31,7 +31,7 @@ const Bank = () => {
       return;
     }
 
-    if (Number(depositInput) < 0) {
+    if (Number(depositInput) < 0 || Number(depositInput) == 0) {
       setValidationError('Please enter a positive number (negative numbers are not allowed)');
       return;
     }
@@ -53,32 +53,76 @@ const Bank = () => {
     if (isConfirmed) {
       setDepositInput('');
     }
-  });
+  }, [isConfirmed])
 
   return (
     <>
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="deposit-input" className="text-base font-semibold">
-            Deposit your ETH
-          </Label>
-          <Input
-            id="number-input"
-            type="number"
-            placeholder="Enter the ETH amount you want to deposit"
-            value={depositInput}
-            min={0.00001}
-            step={0.00001}
-            onChange={(e) => setDepositInput(e.target.value)}
-          />
+      <div className="p-6 border border-border rounded-lg bg-card mt-5">
+        {hash && (
+          <Alert className="mb-4">
+            <AlertDescription>
+              <div className="font-semibold mb-1">Transaction sent!</div>
+              <div className="text-xs break-all">Hash: {hash}</div>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isConfirming && (
+          <Alert className="mb-4">
+            <AlertDescription>
+              Waiting for blockchain confirmation... This may take a few seconds.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isConfirmed && (
+          <Alert className="mb-4 border-green-600 bg-green-500/10">
+            <AlertDescription className="text-foreground">
+              ✅ Transaction confirmed! Your deposit has been made.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {validationError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              {validationError}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {writeError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              <div className="font-semibold mb-1">Transaction failed</div>
+              <div className="text-sm">{(writeError as BaseError).shortMessage || writeError.message}</div>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="deposit-input" className="text-base font-semibold">
+              Deposit your ETH
+            </Label>
+            <Input
+              id="number-input"
+              type="number"
+              placeholder="Enter the ETH amount you want to deposit"
+              value={depositInput}
+              min={0.00001}
+              step={0.00001}
+              onChange={(e) => setDepositInput(e.target.value)}
+            />
+          </div>
+          <Button
+            onClick={handleSetNumber}
+            className="w-full"
+            disabled={writeIsPending || isConfirming}
+          >
+            {writeIsPending || isConfirming ? 'Processing...' : 'Deposit'}
+          </Button>
         </div>
-        <Button
-          onClick={handleSetNumber}
-          className="w-full"
-          disabled={writeIsPending || isConfirming}
-        >
-          {writeIsPending || isConfirming ? 'Processing...' : 'Deposit'}
-        </Button>
       </div>
     </>
   )
