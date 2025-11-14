@@ -12,6 +12,8 @@ import { type BaseError, useReadContract, useWriteContract, useWaitForTransactio
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/utils/constants";
 import { parseEther } from "viem";
 
+import Balance from "./Balance";
+
 const Bank = () => {
   const [validationError, setValidationError] = useState('');
   const [depositInput, setDepositInput] = useState('');
@@ -57,6 +59,7 @@ const Bank = () => {
 
   return (
     <>
+      <Balance />
       <div className="p-6 border border-border rounded-lg bg-card mt-5">
         {hash && (
           <Alert className="mb-4">
