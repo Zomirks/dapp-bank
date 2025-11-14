@@ -13,6 +13,7 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/utils/constants";
 import { parseEther } from "viem";
 
 import Balance from "./Balance";
+import Withdraw from "./Withdraw";
 
 const Bank = () => {
   const [validationError, setValidationError] = useState('');
@@ -127,6 +128,8 @@ const Bank = () => {
           </Button>
         </div>
       </div>
+
+	  <Withdraw />
     </>
   )
 }
