@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-import { type BaseError, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { type BaseError, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/utils/constants";
 import { parseEther } from "viem";

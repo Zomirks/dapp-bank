@@ -28,7 +28,7 @@ const Events = ({ events }: { events: BankEvent[] }) => {
                             className="flex items-center justify-between p-3 border border-border rounded-md bg-muted/30 hover:bg-muted/50 transition-colors"
                         >
                             <div className="flex items-center gap-1">
-                                <Badge variant={event.action == 'etherWithdrawed' ? 'destructive' : 'default'}>{event.action}</Badge>
+                                <Badge className={event.action === 'etherWithdrawed' ? 'bg-red-400' : 'bg-green-400'}>{event.action}</Badge>
                                 <span className="text-xs text-muted-foreground">
                                     By: <span className="font-mono">{shortenAddress(event.account)}</span>
                                 </span>
