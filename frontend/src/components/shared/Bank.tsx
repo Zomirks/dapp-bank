@@ -18,11 +18,7 @@ import Balance from "./Balance";
 import Withdraw from "./Withdraw";
 import Events from "./Events";
 
-interface BankEvent {
-	account: string;
-	action: string;
-	amount: bigint;
-}
+import { BankEvent } from "@/types";
 
 const Bank = () => {
 	const [validationError, setValidationError] = useState('');
