@@ -40,9 +40,9 @@ const Bank = () => {
 		
 		setEvents(BankEvents.map((event) => {
 			return {
-				account: event.args.account as string,
+				account: event.args.account?.toString() || '',
 				action: event.eventName,
-				amount: event.args.amount as bigint
+				amount: event.args.amount || 0n,
 			}
 		}))
 	}
