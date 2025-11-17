@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ArrowDownCircle, Loader2 } from "lucide-react"
 
-import { type BaseError, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
+import { type BaseError, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/utils/constants";
 import { parseEther } from "viem";
 
-const Deposit = () => {
+const Deposit = ({ refetch, getEvents }: { refetch: () => void, getEvents: () => void }) => {
     const [validationError, setValidationError] = useState('');
     const [depositInput, setDepositInput] = useState('');
 
@@ -51,6 +52,8 @@ const Deposit = () => {
 
     useEffect(() => {
         if (isConfirmed) {
+            refetch();
+            getEvents();
             setDepositInput('');
         }
     }, [isConfirmed])
@@ -108,19 +111,30 @@ const Deposit = () => {
                         <Input
                             id="number-input"
                             type="number"
-                            placeholder="Enter the ETH amount you want to deposit"
+                            placeholder="0.00"
                             value={depositInput}
                             min={0.00001}
                             step={0.00001}
                             onChange={(e) => setDepositInput(e.target.value)}
                         />
+                        <p className="text-xs text-muted-foreground">Entrez le montant en ETH</p>
                     </div>
                     <Button
                         onClick={handleSetNumber}
                         className="w-full"
                         disabled={writeIsPending || isConfirming}
                     >
-                        {writeIsPending || isConfirming ? 'Processing...' : 'Deposit'}
+                        {writeIsPending ? (
+                            <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                En cours...
+                            </>
+                        ) : (
+                            <>
+                                <ArrowDownCircle className="w-4 h-4 mr-2" />
+                                Déposer
+                            </>
+                        )}
                     </Button>
                 </div>
             </div>

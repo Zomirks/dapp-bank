@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ArrowUpCircle, Loader2 } from "lucide-react"
 
 import { type BaseError, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/utils/constants";
 import { parseEther } from "viem";
 
-const Withdraw = () => {
+const Withdraw = ({ refetch, getEvents }: { refetch: () => void, getEvents: () => void }) => {
     const [validationError, setValidationError] = useState('');
     const [withdrawInput, setWithdrawInput] = useState('');
 
@@ -51,6 +52,8 @@ const Withdraw = () => {
 
     useEffect(() => {
         if (isConfirmed) {
+            refetch();
+            getEvents();
             setWithdrawInput('');
         }
     }, [isConfirmed])
@@ -108,19 +111,30 @@ const Withdraw = () => {
                         <Input
                             id="number-input"
                             type="number"
-                            placeholder="Enter the ETH amount you want to withdraw"
+                            placeholder="0.00"
                             value={withdrawInput}
                             min={0.00001}
                             step={0.00001}
                             onChange={(e) => setWithdrawInput(e.target.value)}
                         />
+                        <p className="text-xs text-muted-foreground">Entrez le montant en ETH</p>
                     </div>
                     <Button
                         onClick={handleWithdraw}
                         className="w-full"
-                        disabled={writeIsPending || isConfirming}
+                        disabled={writeIsPending || isConfirming || Number(withdrawInput) <= 0}
                     >
-                        {writeIsPending || isConfirming ? 'Processing...' : 'Withdraw'}
+                        {writeIsPending ? (
+                            <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                En cours...
+                            </>
+                        ) : (
+                            <>
+                                <ArrowUpCircle className="w-4 h-4 mr-2" />
+                                Retirer
+                            </>
+                        )}
                     </Button>
                 </div>
             </div>
